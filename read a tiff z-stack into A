@@ -1,0 +1,15 @@
+% read the fatCa.tif file into a 3D matrix and one Mask.tif file as a processing mask
+fname = 'fatCa.tif';
+info = imfinfo(fname);
+num_images = numel(info);
+w = info.Width;
+h = info.Height;
+A = zeros(h,w,num_images);
+
+Mask=imread('Mask.tif');
+MaskI=imcomplement(Mask)/255;
+
+for k = 1:num_images
+    A(:,:,k) = imread(fname, k);
+    %image(A(:,:,k));
+end
