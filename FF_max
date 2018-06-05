@@ -1,0 +1,16 @@
+function Y=FF_max(At,num_images)
+% calculate FFT of one point and find the frequency with the max power
+
+    At=smooth(At,5);
+    Fs=1;
+    L=num_images;
+    FF = fft(At);
+    P2 = abs(FF/L);
+    P1 = P2(1:L/2+1);
+    P1(2:end-1) = 2*P1(2:end-1);
+    f = Fs*(0:(L/2))/L;
+    % figure, plot(f,P1) ;
+    [ff_power, ff_freq]=max(P1);
+    Y=1/(Fs*ff_freq/L);
+    
+end
