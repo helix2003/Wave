@@ -1,0 +1,36 @@
+function [image_cor,image_deltaTP,image_deltaTN]=cormap(A1,A,w,h,Mask, MaskI,window_size, Max_DeltaT)
+
+%create a map of max_cor and delta_T relative to one point A1 out of a time series image A
+
+A1S=A1; %in-case of smoothing data is required
+image_cor=zeros(h,w);   %create a map of max_Cor
+image_deltaT=zeros(h,w);  %create a map of deltaT 
+image_deltaTP=zeros(h,w);   % a map of deltaT that is >0
+image_deltaTN=zeros(h,w);   % a map of deltaT that is <0
+
+for x=1:w
+    
+    
+    for y=1:h
+        
+        if Mask(y,x)==0
+        B1=squeeze(A(y,x,:));
+        Y = MaxcurrBoth(A1S,B1,window_size, Max_DeltaT);
+        image_cor(y,x)= Y(1);
+        
+        image_deltaT(y,x)= Y(2);
+        
+            if image_deltaT(y,x)>0
+                image_deltaTP(y,x)=image_deltaT(y,x);
+            else
+                image_deltaTN(y,x)=-image_deltaT(y,x);
+            end
+        
+        end
+        
+    end
+ 
+end
+
+
+end
